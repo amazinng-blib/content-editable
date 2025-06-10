@@ -8,8 +8,6 @@ import 'draft-js/dist/Draft.css';
 interface JobDescriptionResponse {
   success: boolean;
   content?: string;
-  // error?: string;
-  // missingFields?: Array<string>;
 }
 
 export default function Home() {
@@ -31,10 +29,11 @@ export default function Home() {
       );
 
       if (response.success && response.content) {
-        setJobDescription(response.content);
+        const convertedContent = response.content;
+        setJobDescription(convertedContent);
         setJobDescriptionEditorState(
           EditorState.createWithContent(
-            ContentState.createFromText(response.content)
+            ContentState.createFromText(convertedContent)
           )
         );
         setEditorState(
@@ -52,10 +51,8 @@ export default function Home() {
 
   const handleEditorChange = (newEditorState: EditorState) => {
     setEditorState(newEditorState);
-    // setQuery(newEditorState.getCurrentContent().getPlainText());
   };
 
-  // Add missing handler for job description editor
   const handleJobDescriptionChange = (newEditorState: EditorState) => {
     setJobDescriptionEditorState(newEditorState);
     setJobDescription(newEditorState.getCurrentContent().getPlainText());
@@ -74,9 +71,9 @@ export default function Home() {
   }
 
   return (
-    <div className="max-w-[1200px] mx-auto py-12">
+    <div className="w-full xl:max-w-[1200px] mx-auto py-12 px-4">
       {!jobDescription && (
-        <div className="w-full border rounded-lg p-3">
+        <div className="w-full border rounded-lg p-3 mb-4">
           <Editor
             editorState={editorState}
             onChange={handleEditorChange}

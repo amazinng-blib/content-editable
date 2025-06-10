@@ -33,3 +33,20 @@ body {
 .public-DraftEditorPlaceholder-root {
   color: #6b7280;
 }
+
+.token-suggestion {
+  background-color: #fef3c7;
+  font-weight: 600;
+  padding: 2px 4px;
+  border-radius: 4px;
+  margin: 0 2px;
+}
+
+.token-placeholder {
+  background-color: #fef3c7;
+  font-weight: 600;
+  padding: 2px 4px;
+  border-radius: 4px;
+  margin: 0 2px;
+  border: 1px dashed #d97706;
+}
