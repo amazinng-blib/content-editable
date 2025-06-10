@@ -23,83 +23,6 @@ export default function Home() {
     EditorState.createWithContent(ContentState.createFromText(''))
   );
 
-  // const handleSubmit = async () => {
-  //   try {
-  //     setLoading(true);
-  //     const content = editorState.getCurrentContent().getPlainText();
-
-  //     const response: JobDescriptionResponse = await generateJobDescription(
-  //       content
-  //     );
-
-  //     if (response.success && response.content) {
-  //       let finalJobDescription = await formatJobTemplateWithHighlights(
-  //         response.content
-  //       );
-
-  //       // try {
-  //       //   const tokenSuggestion = await generateTokenSuggestions(content);
-
-  //       //   // If token suggestions are successful, format with highlights
-  //       //   // if (tokenSuggestion.success && tokenSuggestion.suggestions) {
-  //       //   //   finalJobDescription = formatJobTemplateWithHighlights(
-  //       //   //     response.content,
-  //       //   //     tokenSuggestion.suggestions
-  //       //   //   );
-  //       //   // } else {
-  //       //   //   console.log('⚠️ Using job description without token formatting');
-  //       //   //   console.log(
-  //       //   //     'Reason - success:',
-  //       //   //     tokenSuggestion.success,
-  //       //   //     'suggestions:',
-  //       //   //     tokenSuggestion.suggestions
-  //       //   //   );
-  //       //   // }
-  //       // } catch (tokenError) {
-  //       //   console.error(
-  //       //     'Error with token suggestions (using fallback):',
-  //       //     tokenError
-  //       //   );
-  //       //   // Continue with original content if token suggestions fail
-  //       // }
-
-  //       // Always set the job description regardless of token suggestion success
-  //       setJobDescription(finalJobDescription);
-
-  //       // Create editor state with the content
-  //       // For HTML content with highlights, we need to handle it differently
-  //       if (finalJobDescription.includes('<span')) {
-  //         // If content has HTML (highlights), set it as HTML
-  //         setJobDescriptionEditorState(
-  //           EditorState.createWithContent(
-  //             ContentState.createFromText(finalJobDescription) // For now, treating as plain text
-  //           )
-  //         );
-  //       } else {
-  //         // Plain text content
-  //         setJobDescriptionEditorState(
-  //           EditorState.createWithContent(
-  //             ContentState.createFromText(finalJobDescription)
-  //           )
-  //         );
-  //       }
-
-  //       // Clear the input editor
-  //       setEditorState(
-  //         EditorState.createWithContent(ContentState.createFromText(''))
-  //       );
-  //     } else {
-  //       console.error('Job description generation failed:', response);
-  //       // You might want to show an error message to the user here
-  //     }
-  //   } catch (error) {
-  //     console.error('Error in handleSubmit:', error);
-  //     // You might want to show an error message to the user here
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
   const handleSubmit = async () => {
     try {
       setLoading(true);
@@ -203,7 +126,7 @@ export default function Home() {
       )}
 
       {jobDescription && (
-        <div className="my-8 mx-auto border-2 rounded-lg p-4">
+        <div className="my-8 mx-auto  p-4">
           <h3 className="text-lg font-semibold mb-4">
             Generated Job Description:
           </h3>
