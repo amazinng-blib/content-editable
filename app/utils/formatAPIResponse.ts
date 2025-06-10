@@ -5,7 +5,6 @@ export async function formatJobTemplateWithHighlights(
   template: string,
   tokenValues?: TokenSuggestions
 ): Promise<string> {
-  // Step 1: Replace {{token}} with highlighted value or fallback
   const highlighted = template.replace(
     /{{\s*([\w_]+)\s*}}/g,
     (_match, token) => {
@@ -15,7 +14,6 @@ export async function formatJobTemplateWithHighlights(
     }
   );
 
-  // Step 2: Convert markdown to HTML
   const htmlOutput = await marked.parse(highlighted);
 
   return htmlOutput;
