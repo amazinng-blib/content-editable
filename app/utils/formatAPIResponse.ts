@@ -1,25 +1,40 @@
-import { TokenSuggestions } from '../action/job_details_suggestions';
+// import { TokenSuggestions } from '../action/job_details_suggestions';
 
-type TokenMap = {
-  [key: string]: string;
-};
+// export function formatJobTemplateWithHighlights(
+//   template: string
+//   //   data: TokenSuggestions
+// ): string {
+//   // Replace known tokens with actual values
+//   let formatted = template;
 
-export function formatJobTemplateWithHighlights(
-  template: string,
-  data: TokenSuggestions
-): string {
-  // Replace known tokens with actual values
-  let formatted = template;
+//     // for (const [key, value] of Object.entries(data)) {
+//     //   const regex = new RegExp(`{{\\s*${key}\\s*}}`, 'g');
+//     //   formatted = formatted.replace(regex, value);
+//     // }
 
-  for (const [key, value] of Object.entries(data)) {
-    const regex = new RegExp(`{{\\s*${key}\\s*}}`, 'g');
-    formatted = formatted.replace(regex, value);
-  }
+//   // Highlight any remaining {{token}} placeholders in yellow background
+//   formatted = formatted.replace(/{{\s*([\w_]+)\s*}}/g, (_match, token) => {
+//     return `<span style="background-color: yellow;">${[token]}}</span>`;
+//   })
 
-  // Highlight any remaining {{token}} placeholders in yellow background
-  formatted = formatted.replace(/{{\s*([\w_]+)\s*}}/g, (_match, token) => {
-    return `<span style="background-color: yellow;">{{${token}}}</span>`;
-  });
+//   return formatted;
+// }
 
-  return formatted;
+import { marked } from 'marked'; // Use marked or any markdown parser
+
+export async function formatJobTemplateWithHighlights(
+  template: string
+): Promise<string> {
+  // Step 1: Highlight tokens {{token}} with HTML spans
+  const highlighted = template.replace(
+    /{{\s*([\w_]+)\s*}}/g,
+    (_match, token) => {
+      return `<span style="background-color: yellow;">${token}</span>`;
+    }
+  );
+
+  // Step 2: Convert markdown to HTML
+  const htmlOutput = await marked.parse(highlighted);
+
+  return htmlOutput;
 }
