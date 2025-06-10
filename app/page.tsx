@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { generateJobDescription } from './action/Job_details';
 import { Editor, EditorState, ContentState } from 'draft-js';
 import 'draft-js/dist/Draft.css';
+import { generateTokenSuggestions } from './action/job_details_suggestions';
+import { formatJobTemplateWithHighlights } from './utils/formatAPIResponse';
 
 // Add interface for API response
 interface JobDescriptionResponse {
@@ -29,13 +31,18 @@ export default function Home() {
       );
 
       if (response.success && response.content) {
-        const convertedContent = response.content;
-        setJobDescription(convertedContent);
-        setJobDescriptionEditorState(
-          EditorState.createWithContent(
-            ContentState.createFromText(convertedContent)
-          )
-        );
+        const tokenSuggestion = await generateTokenSuggestions(content);
+        if (tokenSuggestion.success && tokenSuggestion.suggestions) {
+          const result = formatJobTemplateWithHighlights(
+            response.content,
+            tokenSuggestion?.suggestions
+          );
+          setJobDescription(result);
+          setJobDescriptionEditorState(
+            EditorState.createWithContent(ContentState.createFromText(result))
+          );
+        }
+
         setEditorState(
           EditorState.createWithContent(ContentState.createFromText(''))
         );
