@@ -311,30 +311,34 @@ export default function Home() {
       );
 
       if (response.success && response.content) {
-        let finalJobDescription = await formatJobTemplateWithHighlights(
-          response.content
-        );
+        const tokenSuggestions = await generateTokenSuggestions(content);
 
-        // Always set the raw HTML job description (for debugging or display elsewhere)
-        setJobDescription(finalJobDescription);
+        if (tokenSuggestions.success && tokenSuggestions.suggestions) {
+          let finalJobDescription = await formatJobTemplateWithHighlights(
+            response.content,
+            tokenSuggestions.suggestions
+          );
 
-        // Convert the HTML into Draft.js editor content
-        const blocksFromHtml = htmlToDraft(finalJobDescription);
-        const { contentBlocks, entityMap } = blocksFromHtml;
+          setJobDescription(finalJobDescription);
 
-        const contentState = ContentState.createFromBlockArray(
-          contentBlocks,
-          entityMap
-        );
+          // Convert the HTML into Draft.js editor content
+          const blocksFromHtml = htmlToDraft(finalJobDescription);
+          const { contentBlocks, entityMap } = blocksFromHtml;
 
-        const editorState = EditorState.createWithContent(contentState);
+          const contentState = ContentState.createFromBlockArray(
+            contentBlocks,
+            entityMap
+          );
 
-        setJobDescriptionEditorState(editorState);
+          const editorState = EditorState.createWithContent(contentState);
 
-        // Clear the input editor
-        setEditorState(
-          EditorState.createWithContent(ContentState.createFromText(''))
-        );
+          setJobDescriptionEditorState(editorState);
+
+          // Clear the input editor
+          setEditorState(
+            EditorState.createWithContent(ContentState.createFromText(''))
+          );
+        }
       } else {
         console.error('Job description generation failed:', response);
       }

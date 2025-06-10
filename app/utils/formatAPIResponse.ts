@@ -1,35 +1,17 @@
-// import { TokenSuggestions } from '../action/job_details_suggestions';
-
-// export function formatJobTemplateWithHighlights(
-//   template: string
-//   //   data: TokenSuggestions
-// ): string {
-//   // Replace known tokens with actual values
-//   let formatted = template;
-
-//     // for (const [key, value] of Object.entries(data)) {
-//     //   const regex = new RegExp(`{{\\s*${key}\\s*}}`, 'g');
-//     //   formatted = formatted.replace(regex, value);
-//     // }
-
-//   // Highlight any remaining {{token}} placeholders in yellow background
-//   formatted = formatted.replace(/{{\s*([\w_]+)\s*}}/g, (_match, token) => {
-//     return `<span style="background-color: yellow;">${[token]}}</span>`;
-//   })
-
-//   return formatted;
-// }
-
-import { marked } from 'marked'; // Use marked or any markdown parser
+import { marked } from 'marked';
+import { TokenSuggestions } from '../action/job_details_suggestions';
 
 export async function formatJobTemplateWithHighlights(
-  template: string
+  template: string,
+  tokenValues?: TokenSuggestions
 ): Promise<string> {
-  // Step 1: Highlight tokens {{token}} with HTML spans
+  // Step 1: Replace {{token}} with highlighted value or fallback
   const highlighted = template.replace(
     /{{\s*([\w_]+)\s*}}/g,
     (_match, token) => {
-      return `<span style="background-color: yellow;">${token}</span>`;
+      const replacement =
+        tokenValues?.[token as keyof TokenSuggestions] ?? `[${token}]`;
+      return `<span style="background-color: yellow;">${replacement}</span>`;
     }
   );
 
